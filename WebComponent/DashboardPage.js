@@ -1,19 +1,22 @@
-const { By, until } = require('selenium-webdriver');
+const { By } = require('selenium-webdriver');
 
 class DashboardPage {
     constructor(driver) {
         this.driver = driver;
-        this.inventoryContainer = By.id('inventory_container');
     }
 
+
     async isOnDashboard() {
-        try {
-            await this.driver.wait(until.elementLocated(this.inventoryContainer), 5000);
-            return true;
-        } catch {
-            return false;
-        }
+        const title = await this.driver.findElement(By.className('title'));
+        return title.getText();
     }
+
+    async addToCart(itemName) {
+
+        const addToCartButton = await this.driver.findElement(By.xpath(`//button[text()='Add to cart'][contains(@id, '${itemName.toLowerCase().replace(/ /g, '-')}')]`));
+        await addToCartButton.click();
+    }
+    
 }
 
 module.exports = DashboardPage;

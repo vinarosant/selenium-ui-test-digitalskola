@@ -3,22 +3,26 @@ const { By } = require('selenium-webdriver');
 class CartPage {
     constructor(driver) {
         this.driver = driver;
-        this.cartItems = By.className('cart_item');
-        this.addToCartButton = By.className('btn_inventory');
-        this.cartIcon = By.className('shopping_cart_link');
     }
 
-    async addItemToCart() {
-        await this.driver.findElement(this.addToCartButton).click();
+    async getCartItemCount() {
+        const cartBadge = await this.driver.findElement(By.className('shopping_cart_badge'));
+        return cartBadge.getText();
+    }
+
+    async addItemToCart(itemName) {
+        const addToCartButton = await this.driver.findElement(By.xpath(`//button[text()='Add to cart'][contains(@id, '${itemName.toLowerCase().replace(/ /g, '-')}')]`));
+        await addToCartButton.click();
     }
 
     async goToCart() {
-        await this.driver.findElement(this.cartIcon).click();
+        const cartIcon = await this.driver.findElement(By.className('shopping_cart_link'));
+        await cartIcon.click();
     }
 
-    async getCartItemsCount() {
-        const items = await this.driver.findElements(this.cartItems);
-        return items.length;
+    async checkout() {
+        const checkoutButton = await this.driver.findElement(By.xpath('//button[text()="Checkout"]'));
+        await checkoutButton.click();
     }
 }
 
