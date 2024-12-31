@@ -56,10 +56,6 @@ describe('TestCase 4 [Checkout Validation] #Regression', function () {
         await loginPage.login('standard_user', 'secret_sauce');
     });
 
-    after(async function () {
-        await driver.quit();
-    });
-
     it('Error: First Name is required', async function () {
         const itemName = "Sauce Labs Backpack";
         console.log("Adding item to cart:", itemName);
@@ -109,5 +105,15 @@ describe('TestCase 4 [Checkout Validation] #Regression', function () {
 
         const successMessage = await checkoutSuccesPage.getSuccessMessage();
         assert.strictEqual(successMessage, 'THANK YOU FOR YOUR ORDER');
+    });
+
+    afterEach(async function () {
+        const screenshot = await driver.takeScreenshot();
+        const filepath = `${screenshotDir}${this.currentTest.title.replace(/\s+/g, '_')}_${Date.now()}.png`;
+        fs.writeFileSync(filepath, screenshot, 'base64');
+    });
+
+    after(async function () {
+        await driver.quit();
     });
 });
