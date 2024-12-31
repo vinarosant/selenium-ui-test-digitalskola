@@ -4,6 +4,7 @@ const DashboardPage = require('./WebComponent/DashboardPage');
 const CartPage = require('./WebComponent/CartPage');
 
 describe('SauceDemo Tests', function () {
+    this.timeout(40000);
     let driver;
     let loginPage, dashboardPage, cartPage;
 
